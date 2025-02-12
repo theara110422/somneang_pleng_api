@@ -23,7 +23,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const role = request.user?.role;
+    const role = request.user.role;
     console.log(`ROLE GUARD SHOULD WORK????? ${JSON.stringify(role)}`)
     // const user = await this.authService.getUser(user_id);
     return this.matchRoles(roles,role)

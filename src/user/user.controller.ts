@@ -20,14 +20,7 @@ export class UserController {
 
   @Post('register')
 
-  async create(@Body() createUserDto: CreateUserDto) : Promise<User> {
-    const existingUser = await this.userService.findByField('email', createUserDto.email);
-    const existingPassword = await this.userService.findByField('password', createUserDto.password);
-
-    if (existingUser && existingPassword) {
-      throw new BadRequestException('Email and password already exist.');
-    }
-    
+  async create(@Body() createUserDto: CreateUserDto) : Promise<User> {   
     return await this.userService.create(createUserDto);
   }
 
@@ -35,7 +28,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard,RolesGuard)
   findAll() {
-    console.log('this is the find all method');
+    // console.log('this is the find all method');
     return this.userService.findAll();
   }
 

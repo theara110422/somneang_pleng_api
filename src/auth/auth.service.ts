@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { JwtPayload } from './jwt-payload.interface';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -12,23 +13,29 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.findOne(username);
-    if (user && await bcrypt.compare(password, user.password)) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
+    return this.userService.validateUser(username, password);
   }
 
   async login(user: any) {
-    const payload: JwtPayload = { username: user.email, sub: user.id, role: user.role };
+    
+    // payload
+    const payload = {sub: user.id,username: user.email,role: user.role};
+    console.log(`payload ${JSON.stringify(payload)}`)
+
+    const accessToken = this.jwtService.sign(payload,{
+      secret : jwtConstants.secret,
+      expiresIn : jwtConstants.expire
+    })
+
     return {
-      access_token: this.jwtService.sign(payload),
-    };
+      access_token: accessToken
+    }
+
   }
 
   
   validateRole(user: any ,currentRole: string) {
+    console.log('validate role', user, currentRole);
     return user.role === currentRole;
   }
 

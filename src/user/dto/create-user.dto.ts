@@ -1,15 +1,14 @@
-import { Type } from "class-transformer";
 import { IsEmail, IsEmpty, IsNotEmpty, MinLength, Validate } from "class-validator";
-import { CreateStudentDto } from "src/students/dto/create-student.dto";
-
+import { Role } from "src/enums/role";
 
 export class CreateUserDto {
   first_name?: string;
   last_name?: string;
-  password: string;
-  email : string;
-  role: string; // 'user' or 'admin'
-  
-  @Type(() => CreateStudentDto)
-  student : CreateStudentDto;
+  password?: string;
+  email ?: string;
+  gender ?: string;
+  age ?: number;
+  role ?: Role; // 'user' or 'admin'
+  phone_number ?: string;
+
 }
